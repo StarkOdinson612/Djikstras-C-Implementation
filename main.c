@@ -1,15 +1,14 @@
 #include <malloc.h>
-#include <stdio.h>
 #include <memory.h>
+#include <stdio.h>
 
-#include "include/vector.h"
 #include "include/utils.h"
+#include "include/vector.h"
 
-
-uint16_t* shortest_path(WeightedGraph *graph, size_t num_vertices, uint16_t start_index, uint16_t end_index) {
+uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
+                        uint16_t start_index, uint16_t end_index) {
     if (start_index == end_index) {
-
-        uint16_t *arr = (uint16_t *) malloc(sizeof(uint16_t));
+        uint16_t *arr = (uint16_t *)malloc(sizeof(uint16_t));
         arr[0] = start_index;
 
         return arr;
@@ -45,26 +44,36 @@ uint16_t* shortest_path(WeightedGraph *graph, size_t num_vertices, uint16_t star
 
         vector_pop(not_queue, c_ind);
 
-        if (vector_contains(visited, current)) { continue; }
+        if (vector_contains(visited, current)) {
+            continue;
+        }
 
         vector_push_back(visited, current);
         VertexNeighbor this_neighbors[MAX_VERTICES];
-        memcpy(this_neighbors, graph[0][current.id - 1].neighbors, sizeof (this_neighbors));
+        memcpy(this_neighbors, graph[0][current.id - 1].neighbors,
+               sizeof(this_neighbors));
 
         for (int i = 0; i < MAX_VERTICES; i++) {
-            if (this_neighbors[i].dist == SELF || this_neighbors[i].dist == UNDEFINED) { continue; }
+            if (this_neighbors[i].dist == SELF ||
+                this_neighbors[i].dist == UNDEFINED) {
+                continue;
+            }
 
-            int16_t tentative_dist = distances[current.id - 1].dist + this_neighbors[i].dist;
+            int16_t tentative_dist =
+                distances[current.id - 1].dist + this_neighbors[i].dist;
 
             if (tentative_dist < distances[i].dist) {
                 distances[i].dist = tentative_dist;
-                vector_push_back(not_queue, VertexNeighbor_init(i + 1, distances[i].dist));
+                vector_push_back(not_queue,
+                                 VertexNeighbor_init(i + 1, distances[i].dist));
             }
         }
-
     }
 
-    uint16_t *arr = (uint16_t *) malloc(sizeof(uint16_t) * MAX_VERTICES);
+    vector_dtr(not_queue);
+    vector_dtr(visited);
+
+    uint16_t *arr = (uint16_t *)malloc(sizeof(uint16_t) * MAX_VERTICES);
 
     for (int i = 0; i < MAX_VERTICES; i++) {
         arr[i] = distances[i].dist;
@@ -75,39 +84,19 @@ uint16_t* shortest_path(WeightedGraph *graph, size_t num_vertices, uint16_t star
 
 int main(void) {
     VertexNeighbor one[MAX_VERTICES] = {
-            {1, SELF},
-            {2, 1},
-            {3, UNDEFINED},
-            {4, 2}
-    };
+        {1, SELF}, {2, 1}, {3, UNDEFINED}, {4, 2}};
 
     VertexNeighbor two[MAX_VERTICES] = {
-            {1, 1},
-            {2, SELF},
-            {3, 5},
-            {4, UNDEFINED}
-    };
+        {1, 1}, {2, SELF}, {3, 5}, {4, UNDEFINED}};
 
-    VertexNeighbor three[MAX_VERTICES] = {
-            {1, 3},
-            {2, 1},
-            {3, SELF},
-            {4, 3}
-    };
+    VertexNeighbor three[MAX_VERTICES] = {{1, 3}, {2, 1}, {3, SELF}, {4, 3}};
 
     VertexNeighbor four[MAX_VERTICES] = {
-            {1, UNDEFINED},
-            {2, 5},
-            {3, 5},
-            {4, SELF}
-    };
+        {1, UNDEFINED}, {2, 5}, {3, 5}, {4, SELF}};
 
     WeightedGraph graph = {
-            WeightedGraphVertex_init(1, one),
-            WeightedGraphVertex_init(2, two),
-            WeightedGraphVertex_init(3, three),
-            WeightedGraphVertex_init(4, four)
-    };
+        WeightedGraphVertex_init(1, one), WeightedGraphVertex_init(2, two),
+        WeightedGraphVertex_init(3, three), WeightedGraphVertex_init(4, four)};
 
     uint16_t *bob = shortest_path(&graph, 4, 1, 4);
 
