@@ -4,6 +4,7 @@
 
 #include "include/vector.h"
 #include "include/utils.h"
+#include "include/priority_queue.h"
 
 
 uint16_t* shortest_path(WeightedGraph *graph, size_t num_vertices, uint16_t start_index, uint16_t end_index) {
@@ -28,22 +29,11 @@ uint16_t* shortest_path(WeightedGraph *graph, size_t num_vertices, uint16_t star
     vector_t *visited = vector_new();
     vector_ctr(visited);
 
-    vector_t *not_queue = vector_new();
-    vector_ctr(not_queue);
-    vector_push_back(not_queue, VertexNeighbor_init(start_index, 0));
+    PriorityQueue p_queue = {{}, 0};
+    enqueue(&p_queue, VertexNeighbor_init(start_index, 0));
 
-    while (not_queue->size > 0) {
-        VertexNeighbor current = VertexNeighbor_init(0, INFINITY);
-        int c_ind;
-
-        for (int i = 0; i < not_queue->size; i++) {
-            if (vector_at(not_queue, i).dist < current.dist) {
-                current = vector_at(not_queue, i);
-                c_ind = i;
-            }
-        }
-
-        vector_pop(not_queue, c_ind);
+    while (p_queue.size > 0) {
+        VertexNeighbor current = dequeue(&p_queue);
 
         if (vector_contains(visited, current)) { continue; }
 
@@ -58,7 +48,7 @@ uint16_t* shortest_path(WeightedGraph *graph, size_t num_vertices, uint16_t star
 
             if (tentative_dist < distances[i].dist) {
                 distances[i].dist = tentative_dist;
-                vector_push_back(not_queue, VertexNeighbor_init(i + 1, distances[i].dist));
+                enqueue(&p_queue, VertexNeighbor_init(i + 1, distances[i].dist));
             }
         }
 
