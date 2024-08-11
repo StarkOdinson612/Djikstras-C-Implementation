@@ -7,4 +7,6 @@ add_executable(Djikstra main.c
         src/vector.c
         include/utils.h
         src/utils.c
+        src/priority_queue.c
+        include/priority_queue.h
 )
