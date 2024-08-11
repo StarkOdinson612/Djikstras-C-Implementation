@@ -8,6 +8,8 @@
 
 uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
                         uint16_t start_index, uint16_t end_index) {
+
+
     if (start_index == end_index) {
         uint16_t *arr = (uint16_t *)malloc(sizeof(uint16_t));
         arr[0] = start_index;
@@ -15,18 +17,22 @@ uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
         return arr;
     }
 
+    VertexNeighbor prev[MAX_VERTICES] = {};
     VertexNeighbor distances[MAX_VERTICES] = {};
 
     for (int i = 0; i < num_vertices; i++) {
         if (i == start_index - 1) {
             distances[i] = VertexNeighbor_init(i + 1, 0);
+            prev[i] = VertexNeighbor_init(i + 1, 0);
             continue;
         }
         distances[i] = VertexNeighbor_init(i + 1, INFINITY);
+        prev[i] = VertexNeighbor_init(i + 1, UNDEFINED);
     }
 
     vector_t *visited = vector_new();
     vector_ctr(visited);
+
 
     PriorityQueue p_queue = {{}, 0};
     enqueue(&p_queue, VertexNeighbor_init(start_index, 0));
@@ -54,19 +60,33 @@ uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
             if (tentative_dist < distances[i].dist) {
                 distances[i].dist = tentative_dist;
+                prev[i] = VertexNeighbor_init(i + 1, distances[i].dist);
                 enqueue(&p_queue, VertexNeighbor_init(i + 1, distances[i].dist));
             }
         }
     }
 
-    vector_dtr(not_queue);
     vector_dtr(visited);
 
-    uint16_t *arr = (uint16_t *)malloc(sizeof(uint16_t) * MAX_VERTICES);
+    vector_t* ret = vector_new();
+    vector_ctr(ret);
 
-    for (int i = 0; i < MAX_VERTICES; i++) {
-        arr[i] = distances[i].dist;
+    uint16_t curr_ind = end_index - 1;
+
+    if (prev[curr_ind].dist != UNDEFINED || curr_ind == start_index - 1) {
+        while (prev[curr_ind].dist != 0) {
+            vector_push_back(ret, prev[curr_ind]);
+            curr_ind = prev[curr_ind].id - 1;
+        }
     }
+
+    uint16_t *arr = (uint16_t*) malloc(sizeof(uint16_t) * ret->size);
+
+    for (int i = ret->size - 1; i >= 0; i--) {
+        arr[ret->size - 1 - i] = vector_at(ret, i).id;
+    }
+
+    vector_dtr(ret);
 
     return arr;
 }
