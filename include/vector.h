@@ -1,5 +1,7 @@
 #pragma once
+#include <stdbool.h>
 #include <stdlib.h>
+
 #include "utils.h"
 
 typedef struct vector_t {
@@ -19,6 +21,10 @@ void vector_push_back(vector_t* obj, VertexNeighbor element);
 void vector_pop_back(vector_t* obj);
 void vector_erase(vector_t* obj, uint16_t first_ind, uint16_t last_ind);
 void vector_pop(vector_t* obj, uint16_t ind);
+
+void vector_reverse(vector_t* obj);
+
+void vector_print(vector_t* obj);
 
 VertexNeighbor vector_at(vector_t* obj, int index);
 VertexNeighbor* vector_begin(vector_t* obj);
