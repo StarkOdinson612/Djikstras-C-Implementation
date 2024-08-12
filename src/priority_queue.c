@@ -2,9 +2,10 @@
 // Created by Ishaan on 8/11/2024.
 //
 
-#include <stdio.h>
-#include <assert.h>
 #include "../include/priority_queue.h"
+
+#include <assert.h>
+#include <stdio.h>
 
 void swap(VertexNeighbor *a, VertexNeighbor *b) {
     VertexNeighbor temp = *a;
@@ -13,17 +14,14 @@ void swap(VertexNeighbor *a, VertexNeighbor *b) {
 }
 
 void heapifyUp(PriorityQueue *pq, uint16_t index) {
-    printf("%d ; %d, %d\n", index != 0, pq->items[index].dist, pq->items[(index - 1) / 2].dist);
-
     uint16_t prev = pq->items[(index - 1) / 2].dist;
     uint16_t curr = pq->items[index].dist;
 
-//    if (prev > curr) {
-//        int y = 0;
-//    } else {
-//        int y = 2;
-//    }
-
+    //    if (prev > curr) {
+    //        int y = 0;
+    //    } else {
+    //        int y = 2;
+    //    }
 
     if (index != 0 && prev > curr) {
         swap(&pq->items[(index - 1) / 2], &pq->items[index]);
@@ -36,9 +34,13 @@ void heapifyDown(PriorityQueue *pq, uint16_t index) {
     int left = 2 * index + 1;
     int right = 2 * index + 2;
 
-    if (left < pq->size && pq->items[left].dist < pq->items[smallest].dist) { smallest = left; }
+    if (left < pq->size && pq->items[left].dist < pq->items[smallest].dist) {
+        smallest = left;
+    }
 
-    if (right < pq->size && pq->items[right].dist < pq->items[smallest].dist) { smallest = right; }
+    if (right < pq->size && pq->items[right].dist < pq->items[smallest].dist) {
+        smallest = right;
+    }
 
     if (smallest != index) {
         swap(&pq->items[index], &pq->items[smallest]);
@@ -48,7 +50,8 @@ void heapifyDown(PriorityQueue *pq, uint16_t index) {
 
 void print_queue(PriorityQueue *pq) {
     for (int i = 0; i < pq->size; i++) {
-        printf("Index %d, Id %d, Dist %d\n", i, pq->items[i].id, pq->items[i].dist);
+        printf("Index %d, Id %d, Dist %d\n", i, pq->items[i].id,
+               pq->items[i].dist);
     }
 }
 
