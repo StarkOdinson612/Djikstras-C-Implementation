@@ -80,11 +80,11 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
     uint16_t curr_ind = end_index - 1;
 
-    // for (int i = 0; i < MAX_VERTICES; i++) {
-    //     printf("%d\n", prev[i].id);
-    // }
+    if (distances[end_index - 1].dist == INFINITY) {
+        vector_push_back(ret, VertexNeighbor_init(end_index, UNDEFINED));
 
-    // printf("\n");
+        return ret;
+    }
 
     if (prev[curr_ind].dist != UNDEFINED || curr_ind == start_index - 1) {
         while (prev[curr_ind].dist != 0) {
