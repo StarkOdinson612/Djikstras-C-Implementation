@@ -108,6 +108,26 @@ void vector_reverse(vector_t* obj) {
 
 void vector_print(vector_t* obj) {
     for (int i = 0; i < obj->size; i++) {
+        VertexNeighbor v = vector_at(obj, i);
+
+        if (v.dist == UNDEFINED) {
+            printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id,
+                   vector_at(obj, i).dist);
+            return;
+        }
+
+        if (v.dist == INFINITY) {
+            printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id,
+                   vector_at(obj, i).dist);
+            return;
+        }
+
+        if (v.dist == SELF) {
+            printf("ID: %d, DIST: SELF\n", vector_at(obj, i).id,
+                   vector_at(obj, i).dist);
+            return;
+        }
+
         printf("ID: %d, DIST: %d\n", vector_at(obj, i).id,
                vector_at(obj, i).dist);
     }
