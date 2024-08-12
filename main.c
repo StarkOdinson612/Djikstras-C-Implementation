@@ -17,8 +17,8 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
         return temp;
     }
 
-    VertexNeighbor prev[MAX_VERTICES] = {};
-    VertexNeighbor distances[MAX_VERTICES] = {};
+    VertexNeighbor prev[NUM_VERTICES] = {};
+    VertexNeighbor distances[NUM_VERTICES] = {};
 
     for (int i = 0; i < num_vertices; i++) {
         if (i == start_index - 1) {
@@ -44,11 +44,11 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
         }
 
         vector_push_back(visited, current);
-        VertexNeighbor this_neighbors[MAX_VERTICES];
+        VertexNeighbor this_neighbors[NUM_VERTICES];
         memcpy(this_neighbors, graph[0][current.id - 1].neighbors,
                sizeof(this_neighbors));
 
-        for (int i = 0; i < MAX_VERTICES; i++) {
+        for (int i = 0; i < NUM_VERTICES; i++) {
             if (this_neighbors[i].dist == SELF ||
                 this_neighbors[i].dist == UNDEFINED) {
                 continue;
@@ -69,7 +69,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
     vector_dtr(visited);
 
     printf("Distances: \n");
-    for (int i = 0; i < MAX_VERTICES; i++) {
+    for (int i = 0; i < NUM_VERTICES; i++) {
         printf("ID: %d, DIST: %d\n", distances[i].id, distances[i].dist);
     }
 
@@ -104,22 +104,31 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 }
 
 int main(void) {
-    VertexNeighbor one[MAX_VERTICES] = {
-        {1, SELF}, {2, 1}, {3, UNDEFINED}, {4, 2}};
+    VertexNeighbor one[NUM_VERTICES] = {
+        {1, SELF}, {2, 7}, {3, 9}, {4, UNDEFINED}, {5, UNDEFINED}, {6, 14}};
 
-    VertexNeighbor two[MAX_VERTICES] = {
-        {1, 1}, {2, SELF}, {3, 5}, {4, UNDEFINED}};
+    VertexNeighbor two[NUM_VERTICES] = {
+        {1, 7}, {2, SELF}, {3, 10}, {4, 15}, {5, UNDEFINED}, {6, UNDEFINED}};
 
-    VertexNeighbor three[MAX_VERTICES] = {{1, 3}, {2, 1}, {3, SELF}, {4, 3}};
+    VertexNeighbor three[NUM_VERTICES] = {{1, 9},  {2, 10},        {3, SELF},
+                                          {4, 11}, {5, UNDEFINED}, {6, 2}};
 
-    VertexNeighbor four[MAX_VERTICES] = {
-        {1, UNDEFINED}, {2, 5}, {3, 5}, {4, SELF}};
+    VertexNeighbor four[NUM_VERTICES] = {
+        {1, UNDEFINED}, {2, 15}, {3, 11}, {4, SELF}, {5, 6}, {6, UNDEFINED}};
+
+    VertexNeighbor five[NUM_VERTICES] = {{1, UNDEFINED}, {2, UNDEFINED},
+                                         {3, UNDEFINED}, {4, 6},
+                                         {5, SELF},      {6, 9}};
+
+    VertexNeighbor six[NUM_VERTICES] = {
+        {1, 14}, {2, UNDEFINED}, {3, 2}, {4, UNDEFINED}, {5, 9}, {6, SELF}};
 
     WeightedGraph graph = {
-        WeightedGraphVertex_init(1, one), WeightedGraphVertex_init(2, two),
-        WeightedGraphVertex_init(3, three), WeightedGraphVertex_init(4, four)};
+        WeightedGraphVertex_init(1, one),   WeightedGraphVertex_init(2, two),
+        WeightedGraphVertex_init(3, three), WeightedGraphVertex_init(4, four),
+        WeightedGraphVertex_init(5, five),  WeightedGraphVertex_init(6, six)};
 
-    vector_t *bob = shortest_path(&graph, 4, 1, 3);
+    vector_t *bob = shortest_path(&graph, NUM_VERTICES, 1, 6);
 
     vector_print(bob);
 
