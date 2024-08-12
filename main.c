@@ -93,6 +93,10 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
         }
     }
 
+    printf("\nReverse Path: \n");
+
+    vector_print(ret);
+
     vector_push_back(
         ret, VertexNeighbor_init(end_index, distances[end_index - 1].dist));
 

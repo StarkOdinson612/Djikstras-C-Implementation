@@ -108,7 +108,7 @@ void vector_reverse(vector_t* obj) {
 
 void vector_print(vector_t* obj) {
     for (int i = 0; i < obj->size; i++) {
-        printf("ID: %d, DIST: %d", vector_at(obj, i).id,
+        printf("ID: %d, DIST: %d\n", vector_at(obj, i).id,
                vector_at(obj, i).dist);
     }
 }
