@@ -1,20 +1,20 @@
 #include <malloc.h>
 #include <memory.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "include/utils.h"
 #include "include/priority_queue.h"
+#include "include/utils.h"
 #include "include/vector.h"
 
-uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
+vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
                         uint16_t start_index, uint16_t end_index) {
-
-
     if (start_index == end_index) {
-        uint16_t *arr = (uint16_t *)malloc(sizeof(uint16_t));
-        arr[0] = start_index;
+        vector_t *temp = vector_new();
+        vector_ctr(temp);
+        vector_push_back(temp, VertexNeighbor_init(start_index, 0));
 
-        return arr;
+        return temp;
     }
 
     VertexNeighbor prev[MAX_VERTICES] = {};
@@ -32,7 +32,6 @@ uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
     vector_t *visited = vector_new();
     vector_ctr(visited);
-
 
     PriorityQueue p_queue = {{}, 0};
     enqueue(&p_queue, VertexNeighbor_init(start_index, 0));
@@ -60,18 +59,32 @@ uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
             if (tentative_dist < distances[i].dist) {
                 distances[i].dist = tentative_dist;
-                prev[i] = VertexNeighbor_init(i + 1, distances[i].dist);
-                enqueue(&p_queue, VertexNeighbor_init(i + 1, distances[i].dist));
+                prev[i] = VertexNeighbor_init(current.id, distances[i].dist);
+                enqueue(&p_queue,
+                        VertexNeighbor_init(i + 1, distances[i].dist));
             }
         }
     }
 
     vector_dtr(visited);
 
-    vector_t* ret = vector_new();
+    printf("Distances: \n");
+    for (int i = 0; i < MAX_VERTICES; i++) {
+        printf("ID: %d, DIST: %d\n", distances[i].id, distances[i].dist);
+    }
+
+    printf("\n");
+
+    vector_t *ret = vector_new();
     vector_ctr(ret);
 
     uint16_t curr_ind = end_index - 1;
+
+    // for (int i = 0; i < MAX_VERTICES; i++) {
+    //     printf("%d\n", prev[i].id);
+    // }
+
+    // printf("\n");
 
     if (prev[curr_ind].dist != UNDEFINED || curr_ind == start_index - 1) {
         while (prev[curr_ind].dist != 0) {
@@ -80,15 +93,12 @@ uint16_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
         }
     }
 
-    uint16_t *arr = (uint16_t*) malloc(sizeof(uint16_t) * ret->size);
+    vector_push_back(
+        ret, VertexNeighbor_init(end_index, distances[end_index - 1].dist));
 
-    for (int i = ret->size - 1; i >= 0; i--) {
-        arr[ret->size - 1 - i] = vector_at(ret, i).id;
-    }
+    vector_reverse(ret);
 
-    vector_dtr(ret);
-
-    return arr;
+    return ret;
 }
 
 int main(void) {
@@ -107,13 +117,13 @@ int main(void) {
         WeightedGraphVertex_init(1, one), WeightedGraphVertex_init(2, two),
         WeightedGraphVertex_init(3, three), WeightedGraphVertex_init(4, four)};
 
-    uint16_t *bob = shortest_path(&graph, 4, 1, 4);
+    vector_t *bob = shortest_path(&graph, 4, 1, 3);
 
-    for (int i = 0; i < MAX_VERTICES; i++) {
-        printf("%d - Distance: %d\n", i + 1, bob[i]);
+    for (int i = 0; i < bob->size; i++) {
+        printf("ID: %d\n", vector_at(bob, i).id);
     }
 
-    free(bob);
+    vector_dtr(bob);
 
     return 0;
 }
