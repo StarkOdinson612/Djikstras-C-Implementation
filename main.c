@@ -88,19 +88,17 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
     if (prev[curr_ind].dist != UNDEFINED || curr_ind == start_index - 1) {
         while (prev[curr_ind].dist != 0) {
-            vector_push_back(ret, prev[curr_ind]);
+            vector_push_back(ret, VertexNeighbor_init(
+                                      prev[curr_ind].id,
+                                      distances[prev[curr_ind].id - 1].dist));
             curr_ind = prev[curr_ind].id - 1;
         }
     }
 
-    printf("\nReverse Path: \n");
-
-    vector_print(ret);
+    vector_reverse(ret);
 
     vector_push_back(
         ret, VertexNeighbor_init(end_index, distances[end_index - 1].dist));
-
-    vector_reverse(ret);
 
     return ret;
 }
@@ -123,9 +121,7 @@ int main(void) {
 
     vector_t *bob = shortest_path(&graph, 4, 1, 3);
 
-    for (int i = 0; i < bob->size; i++) {
-        printf("ID: %d\n", vector_at(bob, i).id);
-    }
+    vector_print(bob);
 
     vector_dtr(bob);
 
