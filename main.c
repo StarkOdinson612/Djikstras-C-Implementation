@@ -107,17 +107,19 @@ int main(void) {
         {{1, SELF}, {2, 4}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, 8}, {9, UNDEF}},
         {{1, 4}, {2, SELF}, {3, 8}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, 11}, {9, UNDEF}},
         {{1, UNDEF}, {2, 8}, {3, SELF}, {4, 7}, {5, 4}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, 2}},
-        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, SELF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
-        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, SELF}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
-        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, SELF}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
-        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, SELF}, {8, UNDEF}, {9, UNDEF}},
-        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, SELF}, {9, UNDEF}},
-        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, SELF}}};
+        {{1, UNDEF}, {2, UNDEF}, {3, 7}, {4, SELF}, {5, 9}, {6, 14}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, 9}, {5, SELF}, {6, 10}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, 4}, {4, 14}, {5, 10}, {6, SELF}, {7, 2}, {8, UNDEF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, 2}, {7, SELF}, {8, 1}, {9, 6}},
+        {{1, 8}, {2, 11}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, 1}, {8, SELF}, {9, 7}},
+        {{1, UNDEF}, {2, UNDEF}, {3, 2}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, 6}, {8, 7}, {9, SELF}}};
 
     WeightedGraph graph = {
         WeightedGraphVertex_init(1, bits[0]), WeightedGraphVertex_init(2, bits[1]),
         WeightedGraphVertex_init(3, bits[2]), WeightedGraphVertex_init(4, bits[3]),
-        WeightedGraphVertex_init(5, bits[4]), WeightedGraphVertex_init(6, bits[5])};
+        WeightedGraphVertex_init(5, bits[4]), WeightedGraphVertex_init(6, bits[5]),
+        WeightedGraphVertex_init(7, bits[6]), WeightedGraphVertex_init(8, bits[7]),
+        WeightedGraphVertex_init(9, bits[8])};
 
     vector_t *bob = shortest_path(&graph, NUM_VERTICES, 1, 6);
 

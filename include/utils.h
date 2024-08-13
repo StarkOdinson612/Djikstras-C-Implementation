@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define NUM_VERTICES 6
+#define NUM_VERTICES 9
 #define INFINITY INT16_MAX
 #define UNDEF -1
 #define SELF -3
