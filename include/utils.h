@@ -4,13 +4,18 @@
 #include <stdlib.h>
 
 #define NUM_VERTICES 9
-#define INFINITY INT16_MAX
+#define F_INFINITY INT16_MAX
 #define UNDEF -1
 #define SELF -3
 
 typedef struct {
+    int32_t x;
+    int32_t y;
+} Point;
+
+typedef struct {
     uint16_t id;
-    int16_t dist;
+    float dist;
 } VertexNeighbor;
 
 typedef struct {
@@ -20,9 +25,11 @@ typedef struct {
 
 typedef WeightedGraphVertex WeightedGraph[NUM_VERTICES];
 
-VertexNeighbor VertexNeighbor_init(uint16_t id, int16_t dist);
+VertexNeighbor VertexNeighbor_init(uint16_t id, float dist);
 
 WeightedGraphVertex WeightedGraphVertex_init(
     uint16_t id, VertexNeighbor neighbors[NUM_VERTICES]);
 
 bool is_number(char* str);
+
+float get_distance(Point a, Point b);

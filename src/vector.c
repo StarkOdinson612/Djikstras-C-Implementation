@@ -116,7 +116,7 @@ void vector_print(vector_t* obj) {
             return;
         }
 
-        if (v.dist == INFINITY) {
+        if (v.dist == F_INFINITY) {
             printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id,
                    vector_at(obj, i).dist);
             return;
@@ -128,7 +128,7 @@ void vector_print(vector_t* obj) {
             return;
         }
 
-        printf("ID: %d, DIST: %d\n", vector_at(obj, i).id,
+        printf("ID: %d, DIST: %.2f\n", vector_at(obj, i).id,
                vector_at(obj, i).dist);
     }
 }

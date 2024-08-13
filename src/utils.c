@@ -4,9 +4,10 @@
 #include "../include/utils.h"
 
 #include <ctype.h>
+#include <math.h>
 #include <memory.h>
 
-VertexNeighbor VertexNeighbor_init(uint16_t id, int16_t dist) {
+VertexNeighbor VertexNeighbor_init(uint16_t id, float dist) {
     VertexNeighbor v;
     v.id = id;
     v.dist = dist;
@@ -31,4 +32,8 @@ bool is_number(char* str) {
     }
 
     return true;
+}
+
+float get_distance(Point a, Point b) {
+    return sqrtf(powf(b.x - a.x, 2) + powf(b.y - a.y, 2));
 }

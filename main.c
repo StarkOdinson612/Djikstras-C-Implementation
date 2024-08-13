@@ -27,7 +27,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
             prev[i] = VertexNeighbor_init(i + 1, 0);
             continue;
         }
-        distances[i] = VertexNeighbor_init(i + 1, INFINITY);
+        distances[i] = VertexNeighbor_init(i + 1, F_INFINITY);
         prev[i] = VertexNeighbor_init(i + 1, UNDEF);
     }
 
@@ -70,7 +70,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
     printf("Distances: \n");
     for (int i = 0; i < NUM_VERTICES; i++) {
-        printf("ID: %d, DIST: %d\n", distances[i].id, distances[i].dist);
+        printf("ID: %d, DIST: %.2f\n", distances[i].id, distances[i].dist);
     }
 
     printf("\n");
@@ -80,7 +80,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
     uint16_t curr_ind = end_index - 1;
 
-    if (distances[end_index - 1].dist == INFINITY) {
+    if (distances[end_index - 1].dist == F_INFINITY) {
         vector_push_back(ret, VertexNeighbor_init(end_index, UNDEF));
 
         return ret;
@@ -112,6 +112,8 @@ int main(int argc, char *argv[]) {
     int end_index = atoi(argv[2]);
 
     assert(start_index >= 1 && end_index <= NUM_VERTICES);
+
+    VertexNeighbor v = VertexNeighbor_init(1, 1);
 
     VertexNeighbor bits[NUM_VERTICES][NUM_VERTICES] = {
         {{1, SELF}, {2, 4}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, 8}, {9, UNDEF}},
