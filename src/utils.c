@@ -3,6 +3,7 @@
 //
 #include "../include/utils.h"
 
+#include <ctype.h>
 #include <memory.h>
 
 VertexNeighbor VertexNeighbor_init(uint16_t id, int16_t dist) {
@@ -20,4 +21,14 @@ WeightedGraphVertex WeightedGraphVertex_init(
     memcpy(v.neighbors, neighbors, sizeof(v.neighbors));
 
     return v;
+}
+
+bool is_number(char* str) {
+    for (int i = 0; i < strlen(str); i++) {
+        if (!isdigit(str[i])) {
+            return false;
+        }
+    }
+
+    return true;
 }

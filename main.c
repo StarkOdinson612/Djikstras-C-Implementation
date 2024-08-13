@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <malloc.h>
 #include <memory.h>
 #include <stdio.h>
@@ -102,7 +103,16 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
     return ret;
 }
 
-int main(void) {
+int main(int argc, char *argv[]) {
+    assert(argc == 3);
+    assert(is_number(argv[1]));
+    assert(is_number(argv[2]));
+
+    int start_index = atoi(argv[1]);
+    int end_index = atoi(argv[2]);
+
+    assert(start_index >= 1 && end_index <= NUM_VERTICES);
+
     VertexNeighbor bits[NUM_VERTICES][NUM_VERTICES] = {
         {{1, SELF}, {2, 4}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, 8}, {9, UNDEF}},
         {{1, 4}, {2, SELF}, {3, 8}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, 11}, {9, UNDEF}},
@@ -121,7 +131,7 @@ int main(void) {
         WeightedGraphVertex_init(7, bits[6]), WeightedGraphVertex_init(8, bits[7]),
         WeightedGraphVertex_init(9, bits[8])};
 
-    vector_t *bob = shortest_path(&graph, NUM_VERTICES, 1, 6);
+    vector_t *bob = shortest_path(&graph, NUM_VERTICES, start_index, end_index);
 
     vector_print(bob);
 

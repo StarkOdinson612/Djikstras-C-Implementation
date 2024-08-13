@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -23,3 +24,5 @@ VertexNeighbor VertexNeighbor_init(uint16_t id, int16_t dist);
 
 WeightedGraphVertex WeightedGraphVertex_init(
     uint16_t id, VertexNeighbor neighbors[NUM_VERTICES]);
+
+bool is_number(char* str);
