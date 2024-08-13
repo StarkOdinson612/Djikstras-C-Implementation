@@ -27,7 +27,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
             continue;
         }
         distances[i] = VertexNeighbor_init(i + 1, INFINITY);
-        prev[i] = VertexNeighbor_init(i + 1, UNDEFINED);
+        prev[i] = VertexNeighbor_init(i + 1, UNDEF);
     }
 
     vector_t *visited = vector_new();
@@ -50,7 +50,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
         for (int i = 0; i < NUM_VERTICES; i++) {
             if (this_neighbors[i].dist == SELF ||
-                this_neighbors[i].dist == UNDEFINED) {
+                this_neighbors[i].dist == UNDEF) {
                 continue;
             }
 
@@ -60,8 +60,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
             if (tentative_dist < distances[i].dist) {
                 distances[i].dist = tentative_dist;
                 prev[i] = VertexNeighbor_init(current.id, distances[i].dist);
-                enqueue(&p_queue,
-                        VertexNeighbor_init(i + 1, distances[i].dist));
+                enqueue(&p_queue, VertexNeighbor_init(i + 1, distances[i].dist));
             }
         }
     }
@@ -81,16 +80,16 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
     uint16_t curr_ind = end_index - 1;
 
     if (distances[end_index - 1].dist == INFINITY) {
-        vector_push_back(ret, VertexNeighbor_init(end_index, UNDEFINED));
+        vector_push_back(ret, VertexNeighbor_init(end_index, UNDEF));
 
         return ret;
     }
 
-    if (prev[curr_ind].dist != UNDEFINED || curr_ind == start_index - 1) {
+    if (prev[curr_ind].dist != UNDEF || curr_ind == start_index - 1) {
         while (prev[curr_ind].dist != 0) {
-            vector_push_back(ret, VertexNeighbor_init(
-                                      prev[curr_ind].id,
-                                      distances[prev[curr_ind].id - 1].dist));
+            vector_push_back(
+                ret, VertexNeighbor_init(prev[curr_ind].id,
+                                         distances[prev[curr_ind].id - 1].dist));
             curr_ind = prev[curr_ind].id - 1;
         }
     }
@@ -104,29 +103,21 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 }
 
 int main(void) {
-    VertexNeighbor one[NUM_VERTICES] = {
-        {1, SELF}, {2, 7}, {3, 9}, {4, UNDEFINED}, {5, UNDEFINED}, {6, 14}};
-
-    VertexNeighbor two[NUM_VERTICES] = {
-        {1, 7}, {2, SELF}, {3, 10}, {4, 15}, {5, UNDEFINED}, {6, UNDEFINED}};
-
-    VertexNeighbor three[NUM_VERTICES] = {{1, 9},  {2, 10},        {3, SELF},
-                                          {4, 11}, {5, UNDEFINED}, {6, 2}};
-
-    VertexNeighbor four[NUM_VERTICES] = {
-        {1, UNDEFINED}, {2, 15}, {3, 11}, {4, SELF}, {5, 6}, {6, UNDEFINED}};
-
-    VertexNeighbor five[NUM_VERTICES] = {{1, UNDEFINED}, {2, UNDEFINED},
-                                         {3, UNDEFINED}, {4, 6},
-                                         {5, SELF},      {6, 9}};
-
-    VertexNeighbor six[NUM_VERTICES] = {
-        {1, 14}, {2, UNDEFINED}, {3, 2}, {4, UNDEFINED}, {5, 9}, {6, SELF}};
+    VertexNeighbor bits[NUM_VERTICES][NUM_VERTICES] = {
+        {{1, SELF}, {2, 4}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, 8}, {9, UNDEF}},
+        {{1, 4}, {2, SELF}, {3, 8}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, 11}, {9, UNDEF}},
+        {{1, UNDEF}, {2, 8}, {3, SELF}, {4, 7}, {5, 4}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, 2}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, SELF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, SELF}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, SELF}, {7, UNDEF}, {8, UNDEF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, SELF}, {8, UNDEF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, SELF}, {9, UNDEF}},
+        {{1, UNDEF}, {2, UNDEF}, {3, UNDEF}, {4, UNDEF}, {5, UNDEF}, {6, UNDEF}, {7, UNDEF}, {8, UNDEF}, {9, SELF}}};
 
     WeightedGraph graph = {
-        WeightedGraphVertex_init(1, one),   WeightedGraphVertex_init(2, two),
-        WeightedGraphVertex_init(3, three), WeightedGraphVertex_init(4, four),
-        WeightedGraphVertex_init(5, five),  WeightedGraphVertex_init(6, six)};
+        WeightedGraphVertex_init(1, bits[0]), WeightedGraphVertex_init(2, bits[1]),
+        WeightedGraphVertex_init(3, bits[2]), WeightedGraphVertex_init(4, bits[3]),
+        WeightedGraphVertex_init(5, bits[4]), WeightedGraphVertex_init(6, bits[5])};
 
     vector_t *bob = shortest_path(&graph, NUM_VERTICES, 1, 6);
 

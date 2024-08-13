@@ -4,7 +4,7 @@
 
 #define NUM_VERTICES 6
 #define INFINITY INT16_MAX
-#define UNDEFINED -1
+#define UNDEF -1
 #define SELF -3
 
 typedef struct {

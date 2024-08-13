@@ -41,7 +41,7 @@ void vector_push_back(vector_t* obj, VertexNeighbor element) {
 
 void vector_pop_back(vector_t* obj) {
     int last_ind = obj->size - 1;
-    obj->elements[last_ind] = VertexNeighbor_init(0, UNDEFINED);
+    obj->elements[last_ind] = VertexNeighbor_init(0, UNDEF);
     obj->size--;
 }
 
@@ -110,7 +110,7 @@ void vector_print(vector_t* obj) {
     for (int i = 0; i < obj->size; i++) {
         VertexNeighbor v = vector_at(obj, i);
 
-        if (v.dist == UNDEFINED) {
+        if (v.dist == UNDEF) {
             printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id,
                    vector_at(obj, i).dist);
             return;
