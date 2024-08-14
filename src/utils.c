@@ -11,7 +11,15 @@ VertexNeighbor VertexNeighbor_init(uint16_t id, float dist) {
     VertexNeighbor v;
     v.id = id;
     v.dist = dist;
+    v.r_dist = dist;
+    return v;
+}
 
+VertexNeighbor VertexNeighbor_alt_init(uint16_t id, float dist, float r_dist) {
+    VertexNeighbor v;
+    v.id = id;
+    v.dist = dist;
+    v.r_dist = r_dist;
     return v;
 }
 

@@ -111,24 +111,21 @@ void vector_print(vector_t* obj) {
         VertexNeighbor v = vector_at(obj, i);
 
         if (v.dist == UNDEF) {
-            printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id,
-                   vector_at(obj, i).dist);
+            printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id);
             return;
         }
 
         if (v.dist == F_INFINITY) {
-            printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id,
-                   vector_at(obj, i).dist);
+            printf("ID: %d, DIST: UNDEFINED\n", vector_at(obj, i).id);
             return;
         }
 
         if (v.dist == SELF) {
-            printf("ID: %d, DIST: SELF\n", vector_at(obj, i).id,
-                   vector_at(obj, i).dist);
+            printf("ID: %d, DIST: SELF\n", vector_at(obj, i).id);
             return;
         }
 
         printf("ID: %d, DIST: %.2f\n", vector_at(obj, i).id,
-               vector_at(obj, i).dist);
+               vector_at(obj, i).r_dist);
     }
 }

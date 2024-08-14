@@ -8,8 +8,8 @@
 #include "include/utils.h"
 #include "include/vector.h"
 
-vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
-                        uint16_t start_index, uint16_t end_index) {
+vector_t *shortest_path_djikstra(WeightedGraph *graph, size_t num_vertices,
+                                 uint16_t start_index, uint16_t end_index) {
     if (start_index == end_index) {
         vector_t *temp = vector_new();
         vector_ctr(temp);
@@ -55,11 +55,12 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
                 continue;
             }
 
-            int16_t tentative_dist =
+            float tentative_dist =
                 distances[current.id - 1].dist + this_neighbors[i].dist;
 
             if (tentative_dist < distances[i].dist) {
                 distances[i].dist = tentative_dist;
+                distances[i].r_dist = tentative_dist;
                 prev[i] = VertexNeighbor_init(current.id, distances[i].dist);
                 enqueue(&p_queue, VertexNeighbor_init(i + 1, distances[i].dist));
             }
@@ -70,7 +71,7 @@ vector_t *shortest_path(WeightedGraph *graph, size_t num_vertices,
 
     printf("Distances: \n");
     for (int i = 0; i < NUM_VERTICES; i++) {
-        printf("ID: %d, DIST: %.2f\n", distances[i].id, distances[i].dist);
+        printf("ID: %d, DIST: %.2f\n", distances[i].id, distances[i].r_dist);
     }
 
     printf("\n");
@@ -133,7 +134,7 @@ int main(int argc, char *argv[]) {
         WeightedGraphVertex_init(7, bits[6]), WeightedGraphVertex_init(8, bits[7]),
         WeightedGraphVertex_init(9, bits[8])};
 
-    vector_t *bob = shortest_path(&graph, NUM_VERTICES, start_index, end_index);
+    vector_t *bob = shortest_path_djikstra(&graph, NUM_VERTICES, start_index, end_index);
 
     vector_print(bob);
 

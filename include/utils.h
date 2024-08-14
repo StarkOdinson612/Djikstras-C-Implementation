@@ -16,6 +16,7 @@ typedef struct {
 typedef struct {
     uint16_t id;
     float dist;
+    float r_dist;
 } VertexNeighbor;
 
 typedef struct {
@@ -26,6 +27,7 @@ typedef struct {
 typedef WeightedGraphVertex WeightedGraph[NUM_VERTICES];
 
 VertexNeighbor VertexNeighbor_init(uint16_t id, float dist);
+VertexNeighbor VertexNeighbor_alt_init(uint16_t id, float dist, float r_dist);
 
 WeightedGraphVertex WeightedGraphVertex_init(
     uint16_t id, VertexNeighbor neighbors[NUM_VERTICES]);
